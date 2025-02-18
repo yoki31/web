@@ -79,6 +79,8 @@ Contributors
 * Artem Kostyuk <a.kostyuk@mobilunity.com>
 * Anand Kansagra <kansagraanand@hotmail.com>
 * Alexandre Díaz <alexandre.diaz@tecnativa.com>
+* Ooops404 <https://ooops404.com>
+  * Sylwester Krasinski <skrasinski62@gmail.com>
 
 Maintainers
 ~~~~~~~~~~~
