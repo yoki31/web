@@ -42,7 +42,9 @@ odoo.define("web_widget_x2many_2d_matrix.widget", function (require) {
             this.x_axis_clickable = this.parse_boolean(node.x_axis_clickable || "1");
             this.y_axis_clickable = this.parse_boolean(node.y_axis_clickable || "1");
             this.field_value = node.field_value || this.field_value;
-            // TODO: is this really needed? Holger?
+            this.fields_att = {};
+            // Here we attach extra params that user want to attach
+            // to each single cell.
             for (var property in node) {
                 if (property.startsWith("field_att_")) {
                     this.fields_att[property.substring(10)] = node[property];
@@ -59,17 +61,13 @@ odoo.define("web_widget_x2many_2d_matrix.widget", function (require) {
                     )
                 );
             }
-            this.show_row_totals = this.parse_boolean(
-                node.show_row_totals ||
+            this.show_row_totals = Boolean(
+                this.parse_boolean(node.show_row_totals || "1") &&
                     this.is_aggregatable(field_defs[this.field_value])
-                    ? "1"
-                    : ""
             );
-            this.show_column_totals = this.parse_boolean(
-                node.show_column_totals ||
+            this.show_column_totals = Boolean(
+                this.parse_boolean(node.show_column_totals || "1") &&
                     this.is_aggregatable(field_defs[this.field_value])
-                    ? "1"
-                    : ""
             );
         },
 
@@ -131,6 +129,7 @@ odoo.define("web_widget_x2many_2d_matrix.widget", function (require) {
                 rows: this.rows,
                 show_row_totals: this.show_row_totals,
                 show_column_totals: this.show_column_totals,
+                fields_att: this.fields_att,
             };
         },
 
@@ -176,6 +175,9 @@ odoo.define("web_widget_x2many_2d_matrix.widget", function (require) {
 
         /**
          * Determine if a field represented by field_def can be aggregated
+         *
+         * @param {Object} field_def: field def
+         * @returns {Boolean} if field def is aggregatable
          */
         is_aggregatable: function (field_def) {
             return field_def.type in {float: 1, monetary: 1, integer: 1};
